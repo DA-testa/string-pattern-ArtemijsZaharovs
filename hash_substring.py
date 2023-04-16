@@ -1,23 +1,22 @@
 # python3
 def read_input():
     iorf = input().rstrip()
-    if iorf == 'F':
-        try:
-            with open('test_sample.txt', 'r') as file:
-                pattern = file.readline().rstrip()
-                text = file.readline().rstrip()
-        except FileNotFoundError:
-                        pattern = input().rstrip()
-            text = input().rstrip()
-    else:
+    if iorf == 'I':
         pattern = input().rstrip()
         text = input().rstrip()
-    return pattern, text
+        return(pattern, text)
+    if iorf == 'F':
+        with open("test_sample.txt", 'r') as f:
+            pattern = f.readline().rstrip()
+            text = f.readline().rstrip()
+            return (pattern, text)
 
 def print_occurrences(output):
     print(' '.join(map(str, output)))
 
 def get_occurrences(pattern, text):
+    
+    occurrences = []
     z = 256
     q = 101
     v = len(pattern)
@@ -25,7 +24,6 @@ def get_occurrences(pattern, text):
     o = pow(z, v - 1) % q
     p = 0
     t = 0
-    result = []
 
     for i in range(v):
         p = (z * p + ord(pattern[i])) % q
@@ -34,20 +32,16 @@ def get_occurrences(pattern, text):
     for s in range(n - v + 1):
         if p == t:
             if text[s:s + v] == pattern:
-                result.append(s)
-        
+                occurrences.append(s)
+
         if s < n - v:
             t = (z * (t - ord(text[s]) * o) + ord(text[s + v])) % q
 
             if t < 0:
                 t += q
 
-    return result
-
-def main():
-    pattern, text = read_input()
-    occurrences = get_occurrences(pattern, text)
-    print_occurrences(occurrences)
+    return occurrences
 
 if __name__ == '__main__':
-    main()
+    occurrences = get_occurrences(*read_input())
+    print_occurrences(occurrences)
