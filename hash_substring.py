@@ -1,47 +1,47 @@
 # python3
-def read_input():
-    iorf = input().rstrip()
-    if iorf == 'I':
-        pattern = input().rstrip()
-        text = input().rstrip()
-        return(pattern, text)
-  else:
-        with open("./tests/06", "r") as f:
-            text1 = f.readline()
-            text2 = f.readline()
+def get_input_from_user():
+    text1 = input()
+    text2 = input()
     return text1.rstrip(), text2.rstrip()
+
+
+def get_input_from_file(file_path):
+    with open(file_path, "r") as f:
+        text1 = f.readline()
+        text2 = f.readline()
+    return text1.rstrip(), text2.rstrip()
+
+
+def read_input():
+    text = input()
+
+    if "I" in text[:1]:
+        return get_input_from_user()
+    else:
+        return get_input_from_file("./tests/06")
+
 
 def print_occurrences(output):
     print(' '.join(map(str, output)))
 
+
 def get_occurrences(pattern, text):
-    
-    occurrences = []
-    z = 256
-    q = 101
-    v = len(pattern)
-    n = len(text)
-    o = pow(z, v - 1) % q
-    p = 0
-    t = 0
+    result = []
+    hash_pattern = hash(pattern)
 
-    for i in range(v):
-        p = (z * p + ord(pattern[i])) % q
-        t = (z * t + ord(text[i])) % q
+    for i in range(len(text) - len(pattern) + 1):
+        hash_text = hash(text[i:i + len(pattern)])
+        if hash_text == hash_pattern:
+            if text[i:i + len(pattern)] == pattern:
+                result.append(i)
+    return result
 
-    for s in range(n - v + 1):
-        if p == t:
-            if text[s:s + v] == pattern:
-                occurrences.append(s)
 
-        if s < n - v:
-            t = (z * (t - ord(text[s]) * o) + ord(text[s + v])) % q
+def main():
+    pattern, text = read_input()
+    occurrences = get_occurrences(pattern, text)
+    print_occurrences(occurrences)
 
-            if t < 0:
-                t += q
-
-    return occurrences
 
 if __name__ == '__main__':
-    occurrences = get_occurrences(*read_input())
-    print_occurrences(occurrences)
+    main()
