@@ -2,9 +2,13 @@
 def read_input():
     iorf = input().rstrip()
     if iorf == 'F':
-        with open('test_sample.txt', 'r') as file:
-            pattern = file.readline().rstrip()
-            text = file.readline().rstrip()
+        try:
+            with open('test_sample.txt', 'r') as file:
+                pattern = file.readline().rstrip()
+                text = file.readline().rstrip()
+        except FileNotFoundError:
+                        pattern = input().rstrip()
+            text = input().rstrip()
     else:
         pattern = input().rstrip()
         text = input().rstrip()
