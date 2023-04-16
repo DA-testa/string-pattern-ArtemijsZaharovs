@@ -5,11 +5,11 @@ def read_input():
         pattern = input().rstrip()
         text = input().rstrip()
         return(pattern, text)
-    if iorf == 'F':
-        with open("test_sample.txt", 'r') as f:
-            pattern = f.readline().rstrip()
-            text = f.readline().rstrip()
-            return (pattern, text)
+  else:
+        with open("./tests/06", "r") as f:
+            text1 = f.readline()
+            text2 = f.readline()
+    return text1.rstrip(), text2.rstrip()
 
 def print_occurrences(output):
     print(' '.join(map(str, output)))
