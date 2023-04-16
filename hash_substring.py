@@ -1,32 +1,47 @@
 # python3
+def get_input_from_user():
+    text1 = input()
+    text2 = input()
+    return text1.rstrip(), text2.rstrip()
+
+
+def get_input_from_file(file_path):
+    with open(file_path, "r") as f:
+        text1 = f.readline()
+        text2 = f.readline()
+    return text1.rstrip(), text2.rstrip()
+
 
 def read_input():
-    # this function needs to aquire input both from keyboard and file
-    # as before, use capital i (input from keyboard) and capital f (input from file) to choose which input type will follow
-    
-    
-    # after input type choice
-    # read two lines 
-    # first line is pattern 
-    # second line is text in which to look for pattern 
-    
-    # return both lines in one return
-    
-    # this is the sample return, notice the rstrip function
-    return (input().rstrip(), input().rstrip())
+    text = input()
+
+    if "I" in text[:1]:
+        return get_input_from_user()
+    else:
+        return get_input_from_file("./tests/06")
+
 
 def print_occurrences(output):
-    # this function should control output, it doesn't need any return
     print(' '.join(map(str, output)))
 
+
 def get_occurrences(pattern, text):
-    # this function should find the occurances using Rabin Karp alghoritm 
+    result = []
+    hash_pattern = hash(pattern)
 
-    # and return an iterable variable
-    return [0]
+    for i in range(len(text) - len(pattern) + 1):
+        hash_text = hash(text[i:i + len(pattern)])
+        if hash_text == hash_pattern:
+            if text[i:i + len(pattern)] == pattern:
+                result.append(i)
+    return result
 
 
-# this part launches the functions
+def main():
+    pattern, text = read_input()
+    occurrences = get_occurrences(pattern, text)
+    print_occurrences(occurrences)
+
+
 if __name__ == '__main__':
-    print_occurrences(get_occurrences(*read_input()))
-
+    main()
